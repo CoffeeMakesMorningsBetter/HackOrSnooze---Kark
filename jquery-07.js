@@ -1,8 +1,16 @@
 $(function() {
   getStories();
 
-  $('#form').on('submit', function(event) {
+  var permission = false;
+  // run hasPermission > checks local storage for token
+  // if token > persmision = true, login link > logout link
+  // $('#login').removeClass('hidden');
+  // $('#logout').addClass('hidden');
+  // else > require login on favorites/post
+
+  $('#story-form').on('submit', function(event) {
     event.preventDefault();
+    // add story to database to view in posts link
 
     var $i = $('<i>').addClass('far fa-bookmark');
     var $title = $('<span>')
@@ -19,7 +27,7 @@ $(function() {
       .addClass('url-span');
 
     $('ol').append($('<li>').append($i, $title, ' (', $urlSpan, ')'));
-    $('#form')
+    $('#story-form')
       .trigger('reset')
       .slideUp();
     $('li').show();
@@ -28,15 +36,40 @@ $(function() {
   });
 
   $('ol').on('click', 'i', function(event) {
+    // if (permission === true) {
     $(event.target).toggleClass('far fas');
+    // store that story in ls
+    // } else {
+    // trigger modal
+    // }
+  });
+
+  $('#submit-form').on('click', function() {
+    // if (permission === true) {
+    $('#story-form').toggle();
+    // } else {
+    // trigger modal
+    // }
+  });
+
+  $('#posts').on('click', function() {
+    // if (permission === true) {
+    // > display user posts
+    // } else {
+    // trigger modal
+    // }
   });
 
   $('#favorites').on('click', function() {
+    // if (permission === true) {
     $('.far')
       .parent()
       .hide();
     $('#favorites').addClass('hidden');
     $('#show-all').removeClass('hidden');
+    // } else {
+    // trigger modal
+    // }
   });
 
   $('ol').on('click', '.url-span', function(event) {
@@ -45,20 +78,10 @@ $(function() {
     $('#show-all').removeClass('hidden');
   });
 
-  $('#show-all').on('click', function() {
+  $('.front-page').on('click', function() {
     $('li').show();
     $('#favorites').removeClass('hidden');
     $('#show-all').addClass('hidden');
-  });
-
-  $('#new').on('click', function() {
-    $('li').show();
-    $('#favorites').removeClass('hidden');
-    $('#show-all').addClass('hidden');
-  });
-
-  $('.show-form').on('click', function() {
-    $('#form').slideToggle();
   });
 
   $('#login').on('click', function() {
@@ -72,8 +95,16 @@ $(function() {
   });
 
   $('#login-form').on('submit', function() {
-    // loginUser()
-    // getToken($('#create-name').val(), $('#create-user').val());
+    // call login > store username:token local storage
+    $('#login').addClass('hidden');
+    $('#logout').removeClass('hidden');
+    permission = true;
+  });
+
+  $('#logout').on('click', function() {
+    // clear username:token from local storage
+    $('#login').removeClass('hidden');
+    $('#logout').addClass('hidden');
   });
 
   $('#signup-form').on('submit', function() {
@@ -106,36 +137,5 @@ async function getStories() {
       .addClass('url-span');
 
     $('ol').append($('<li>').append($i, $title, ' (', $urlSpan, ')'));
-  });
-}
-
-function createUser(name, username, password) {
-  $.ajax({
-    method: 'POST',
-    url: 'https://hack-or-snooze.herokuapp.com/users',
-    data: {
-      data: {
-        name,
-        username,
-        password
-      }
-    }
-  }).then(function(val) {
-    console.log(val);
-  });
-}
-
-function getToken(username, password) {
-  $.ajax({
-    method: 'POST',
-    url: 'https://hack-or-snooze.herokuapp.com/auth',
-    data: {
-      data: {
-        username,
-        password
-      }
-    }
-  }).then(function(val) {
-    localStorage.setItem(username, val.data.token);
   });
 }
