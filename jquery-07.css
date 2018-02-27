@@ -7,17 +7,14 @@ body {
   letter-spacing: 0.25px;
 }
 #header,
-#main {
-  margin: 0 108px;
-}
-
-#header {
+hr {
   padding-left: 2px;
   background: rgb(255, 102, 0);
 }
 #header .col {
   display: flex;
   align-items: center;
+  padding-right: 0;
 }
 #brand {
   color: white;
@@ -27,6 +24,9 @@ body {
 #header strong {
   padding-left: 2px;
   color: #222222;
+}
+#login {
+  padding-right: 4px;
 }
 #header strong,
 #header a,
@@ -42,30 +42,22 @@ body {
   padding: 30px 0 0 0;
   background: rgb(246, 246, 240);
 }
-#form,
-#login-form {
+#form {
   padding-bottom: 30px;
 }
-#form .form-heading,
-#login-form .form-heading,
-#form label,
-#login-form label {
+#body .form-heading,
+#body label {
   padding: 8px;
   font-weight: 800;
 }
-#form .form-heading,
-#login-form .form-heading {
-  padding-left: 20px;
+#body .form-heading {
+  padding-left: 28px;
 }
-#form .form-heading,
-#login-form .form-heading,
-#form label,
-#form input,
-#form button,
-#login-form label,
-#login-form input,
-#login-form button,
-#list .title-span {
+#list .title-span,
+#body .form-heading,
+#body label,
+#body input,
+#body button {
   color: #000000;
   font-size: 10.25pt;
 }
@@ -89,19 +81,13 @@ body {
   text-decoration: underline;
   cursor: pointer;
 }
-#form button,
-#login-form button {
+#body button {
   background: darkgray;
   border: none;
   color: white;
 }
-#form button:hover,
-#login-form button:hover {
+#body button:hover {
   background: gray;
-}
-hr {
-  height: 2px;
-  background: rgb(255, 102, 0);
 }
 .hidden {
   display: none;
