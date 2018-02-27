@@ -42,16 +42,29 @@ body {
   padding: 30px 0 0 0;
   background: rgb(246, 246, 240);
 }
-#form {
+#form,
+#login-form {
   padding-bottom: 30px;
 }
-#form label {
+#form .form-heading,
+#login-form .form-heading,
+#form label,
+#login-form label {
   padding: 8px;
   font-weight: 800;
 }
+#form .form-heading,
+#login-form .form-heading {
+  padding-left: 20px;
+}
+#form .form-heading,
+#login-form .form-heading,
 #form label,
 #form input,
 #form button,
+#login-form label,
+#login-form input,
+#login-form button,
 #list .title-span {
   color: #000000;
   font-size: 10.25pt;
@@ -76,12 +89,14 @@ body {
   text-decoration: underline;
   cursor: pointer;
 }
-#form button {
+#form button,
+#login-form button {
   background: darkgray;
   border: none;
   color: white;
 }
-#form button:hover {
+#form button:hover,
+#login-form button:hover {
   background: gray;
 }
 hr {

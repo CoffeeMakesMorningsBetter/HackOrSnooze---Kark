@@ -25,6 +25,8 @@
         <span>|</span>
         <a id="favorites" href="#">favorites</a>
         <a id="show-all" class="hidden" href="#">all</a>
+        <span>|</span>
+        <a id="login" href="#">login/sign-up</a>
       </div>
     </nav>
   </header>
@@ -32,7 +34,10 @@
   <main id="main" class="container">
     <form id="form">
       <div class="form-group row">
-        <label class="offset-1 col-1 col-form-label text-right" for="title">title</label>
+        <div class="offset-2 col-4 text-left form-heading">login/sign-up</div>
+      </div>
+      <div class="form-group row">
+        <label class="offset-1 col-1 form-label text-right" for="title">title</label>
         <div class="col-6">
           <input type="text" class="form-control" id="title" placeholder="enter title" required>
         </div>
@@ -46,6 +51,30 @@
       <div class="form-group row">
         <div class="offset-2 col-6">
           <button type="submit" class="btn btn-primary">submit</button>
+        </div>
+      </div>
+    </form>
+
+    <form id="login-form" method="POST">
+      <div class="form-group row">
+        <div class="offset-2 col-4 text-left form-heading">login/sign-up</div>
+      </div>
+      <div class="form-group row">
+        <label class="offset-1 col-1 form-label text-right" for="login-email">email</label>
+        <div class="col-6">
+          <input type="email" class="form-control" id="login-email" placeholder="enter email" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="offset-1 col-1 col-form-label text-right" for="login-password">password</label>
+        <div class="col-6">
+          <input type="password" class="form-control" id="login-password" placeholder="enter password" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="offset-2 col-6">
+          <button type="submit" class="btn btn-primary">login</button>
+          <button type="submit" class="btn btn-primary">sign-up</button>
         </div>
       </div>
     </form>
