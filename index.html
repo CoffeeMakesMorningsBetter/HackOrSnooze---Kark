@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Hack Or Snooze</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,800" rel="stylesheet">
+  <link rel="stylesheet" href="jquery-07.css">
+</head>
+
+<body>
+  <header id="header" class="container">
+    <nav class="row">
+      <div class="col">
+        <i id="brand" class="show-form fab fa-hacker-news"></i>
+        <a id="home" class="show-form" href="#">
+          <strong>Hack Or Snooze</strong>
+        </a>
+        <a class="show-form" href="#">submit</a>
+        <span>|</span>
+        <a id="favorites" href="#">favorites</a>
+        <a id="show-all" class="hidden" href="#">all</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="container">
+    <form id="form">
+      <div class="form-group row">
+        <label class="offset-1 col-1 col-form-label text-right" for="title">title</label>
+        <div class="col-6">
+          <input type="text" class="form-control" id="title" placeholder="enter title" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="offset-1 col-1 col-form-label text-right" for="url">url</label>
+        <div class="col-6">
+          <input type="url" class="form-control" id="url" placeholder="enter complete url" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="offset-2 col-6">
+          <button type="submit" class="btn btn-primary">submit</button>
+        </div>
+      </div>
+    </form>
+
+    <section id="list">
+      <div class "row">
+        <div class="col">
+          <ol>
+            <li>
+              <i class="far fa-bookmark"></i>
+              <span class="title-span">VSC Ride or Die</span>
+              <span>(</span><span class="url-span">code.visualstudio.com</span><span>)</span>
+            </li>
+            <li>
+              <i class="far fa-bookmark"></i>
+              <span class="title-span">My Actual Dad...</span>
+              <span>(</span><span class="url-span">dadjokegenerator.com</span><span>)</span>
+            </li>
+            <li>
+              <i class="far fa-bookmark"></i>
+              <span class="title-span">Look, Mom, I'm on the Internet!</span>
+              <span>(</span><span class="url-span">karlsecco.com</span><span>)</span>
+            </li>
+            <li>
+              <i class="far fa-bookmark"></i>
+              <span class="title-span">Click hostname to filter
+              </span>
+              <span>(</span><span class="url-span">karlsecco.com</span><span>)</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+    <hr>
+  </main>
+  <div id="scripts">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"></script>
+    <script src="jquery-07.js"></script>
+  </div>
+</body>
+
+</html>
