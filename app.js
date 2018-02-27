@@ -22,7 +22,7 @@ async function getStories() {
 }
 
 function createUser(name, username, password) {
-  $.ajax({
+  return $.ajax({
     method: "POST",
     url: "https://hack-or-snooze.herokuapp.com/users",
     data: {
@@ -32,8 +32,6 @@ function createUser(name, username, password) {
         password
       }
     }
-  }).then(function(val) {
-    console.log(val);
   });
 }
 
@@ -48,24 +46,24 @@ function storeToken(username, password) {
       }
     }
   }).then(function(val) {
-    localStorage.setItem(username, val.data.token);
+    localStorage.setItem("token", val.data.token);
   });
 }
 
-function getToken(username, password) {
-  return $.ajax({
-    method: "POST",
-    url: "https://hack-or-snooze.herokuapp.com/auth",
-    data: {
-      data: {
-        username,
-        password
-      }
-    }
-  }).then(function(val) {
-    console.log(val.data.token);
-  });
-}
+// function getToken(username, password) {
+//   return $.ajax({
+//     method: "POST",
+//     url: "https://hack-or-snooze.herokuapp.com/auth",
+//     data: {
+//       data: {
+//         username,
+//         password
+//       }
+//     }
+//   }).then(function(val) {
+//     console.log(val.data.token);
+//   });
+// }
 
 function getUser(username) {
   var token = localStorage.getItem(username);
@@ -78,3 +76,5 @@ function getUser(username) {
     console.log(val);
   });
 }
+
+function hasPermission(username, password) {}

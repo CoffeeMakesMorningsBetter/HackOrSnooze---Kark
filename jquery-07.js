@@ -94,26 +94,34 @@ $(function() {
     $("#signup-form").removeClass("hidden");
   });
 
-  $("#login-form").on("submit", function() {
-    // call login > store username:token local storage
+  $("#login-form").on("submit", function(event) {
+    event.preventDefault();
+    storeToken($("#login-user").val(), $("#login-pwd").val());
+    $("#login-modal").modal("hide");
+    $("#login-form").trigger("reset");
     $("#login").addClass("hidden");
     $("#logout").removeClass("hidden");
-    permission = true;
   });
 
   $("#logout").on("click", function() {
-    // clear username:token from local storage
+    localStorage.clear();
     $("#login").removeClass("hidden");
     $("#logout").addClass("hidden");
   });
 
-  $("#signup-form").on("submit", function() {
+  $("#signup-form").on("submit", function(event) {
+    event.preventDefault();
     createUser(
       $("#create-name").val(),
       $("#create-user").val(),
       $("#create-pwd").val()
-    );
-    getToken($("#create-user").val(), $("#create-pwd").val());
+    ).then(function() {
+      storeToken($("#create-user").val(), $("#create-pwd").val());
+      $("#login-modal").modal("hide");
+      $("#signup-form").trigger("reset");
+      $("#login").addClass("hidden");
+      $("#logout").removeClass("hidden");
+    });
   });
 });
 
@@ -139,3 +147,5 @@ async function getStories() {
     $("ol").append($("<li>").append($i, $title, " (", $urlSpan, ")"));
   });
 }
+
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hcmsyMjIiLCJpYXQiOjE1MTk3NzExMjN9.C9qGuBdORo9YUV5ttYSSKZiX-trPdAYE7MOaoCwMtAU
