@@ -17,25 +17,28 @@
   <header id="header" class="container">
     <nav class="row">
       <div class="col">
-        <i id="brand" class="show-form fab fa-hacker-news"></i>
-        <a id="home" class="show-form" href="#">
+        <i id="brand" class="front-page fab fa-hacker-news"></i>
+        <a class="front-page" href="#">
           <strong>Hack Or Snooze</strong>
         </a>
-        <a id="new" href="#">new</a>
+        <a class="front-page" href="#">new</a>
         <span>|</span>
-        <a class="show-form" href="#">submit</a>
-        <span>|</span>
-        <a id="favorites" href="#">favorites</a>
-        <a id="show-all" class="hidden" href="#">all</a>
+        <a id="submit-form" href="#">submit</a>
         <span>|</span>
         <a id="posts" href="#">posts</a>
-        <a id="login" class="ml-auto" data-toggle="modal" data-target="#login-modal" href="#">login</a>
+        <span>|</span>
+        <a id="favorites" href="#">favorites</a>
+        <a id="show-all" class="hidden front-page" href="#">all</a>
+        <span class="ml-auto">
+          <a id="login" data-toggle="modal" data-target="#login-modal" href="#">login</a>
+          <a id="logout" class="hidden" data-toggle="modal" data-target="#login-modal" href="#">logout</a>
+        </span>
       </div>
     </nav>
   </header>
 
   <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-body">
 
@@ -101,7 +104,7 @@
   </div>
 
   <main id="main" class="container">
-    <form id="form">
+    <form id="story-form" class="hidden">
       <div class="form-group row">
         <div class="col-md-3"></div>
         <div class="col-md-5  text-left form-heading">submit link</div>
@@ -130,27 +133,7 @@
       <div class "row">
         <div class="col">
           <ol>
-            <!-- <li>
-              <i class="far fa-bookmark"></i>
-              <span class="title-span">VSC Ride or Die</span>
-              <span>(</span><span class="url-span">code.visualstudio.com</span><span>)</span>
-            </li>
-            <li>
-              <i class="far fa-bookmark"></i>
-              <span class="title-span">My Actual Dad...</span>
-              <span>(</span><span class="url-span">dadjokegenerator.com</span><span>)</span>
-            </li>
-            <li>
-              <i class="far fa-bookmark"></i>
-              <span class="title-span">Look, Mom, I'm on the Internet!</span>
-              <span>(</span><span class="url-span">karlsecco.com</span><span>)</span>
-            </li>
-            <li>
-              <i class="far fa-bookmark"></i>
-              <span class="title-span">Click hostname to filter
-              </span>
-              <span>(</span><span class="url-span">karlsecco.com</span><span>)</span>
-            </li> -->
+            <!-- populate 10 stories here -->
           </ol>
         </div>
       </div>
