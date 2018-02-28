@@ -18,6 +18,7 @@ async function getStories() {
       .addClass('url-span');
 
     $('ol').append($('<li>').append($i, $title, ' (', $urlSpan, ')'));
+    $('li').attr('id', obj.storyId);
   });
 }
 
@@ -89,7 +90,7 @@ function storeToken(username, password) {
 
 function getUser(username) {
   var token = localStorage.getItem(username);
-  $.ajax({
+  return $.ajax({
     url: 'https://hack-or-snooze.herokuapp.com/users/' + username,
     headers: {
       Authorization: 'Bearer ' + token
@@ -101,4 +102,18 @@ function getUser(username) {
 
 function isLoggedIn() {
   return localStorage.getItem('token') !== null;
+}
+
+function addFavorite(storyId) {
+  var localToken = localStorage.getItem('token');
+  var localUsername = JSON.parse(atob(localToken.split('.')[1])).username;
+  return $.ajax({
+    method: 'POST',
+    url: `https://hack-or-snooze.herokuapp.com/users/${localUsername}/favorites/${storyId}`,
+    headers: {
+      Authorization: 'Bearer ' + localToken
+    }
+  }).then(function(val) {
+    console.log(val);
+  });
 }
