@@ -2,7 +2,7 @@ $(function() {
   getStories();
   if (isLoggedIn() === true) {
     $('#login').addClass('hidden');
-    $('#profile').addClass('hidden');
+    $('#profile').removeClass('hidden');
     $('#logout').removeClass('hidden');
   }
 
@@ -121,15 +121,29 @@ $(function() {
     $('#login-modal').modal('hide');
     $('#login-form').trigger('reset');
     $('#login').addClass('hidden');
-    $('#profile').addClass('hidden');
+    $('#profile').removeClass('hidden');
     $('#logout').removeClass('hidden');
   });
 
   $('#logout').on('click', function() {
     localStorage.clear();
     $('#login').removeClass('hidden');
-    $('#profile').removeClass('hidden');
+    $('#profile').addClass('hidden');
     $('#logout').addClass('hidden');
+  });
+
+  $('#profile').on('click', function() {
+    getUser()
+      .then(function(data) {
+        $('#list').hide();
+        $('#profile-page').append(
+          $('<h1>').text(`name: ${data.data.name}`),
+          $('<h2>').text(`username: ${data.data.username}`)
+        );
+      })
+      .catch(function() {
+        alert('hmmm something went wrong, please try again');
+      });
   });
 
   $('#signup-form').on('submit', function(event) {
@@ -144,7 +158,7 @@ $(function() {
         $('#login-modal').modal('hide');
         $('#signup-form').trigger('reset');
         $('#login').addClass('hidden');
-        $('#profile').addClass('hidden');
+        $('#profile').removeClass('hidden');
         $('#logout').removeClass('hidden');
       })
       .catch(function() {

@@ -96,20 +96,15 @@ function storeToken(username, password) {
 //   });
 // }
 
-function getUser(username) {
-  var token = localStorage.getItem(username);
+function getUser() {
+  var localToken = localStorage.getItem('token');
+  var localUsername = JSON.parse(atob(localToken.split('.')[1])).username;
   return $.ajax({
-    url: 'https://hack-or-snooze.herokuapp.com/users/' + username,
+    url: `https://hack-or-snooze.herokuapp.com/users/${localUsername}`,
     headers: {
-      Authorization: 'Bearer ' + token
+      Authorization: `Bearer ${localToken}`
     }
-  })
-    .then(function(val) {
-      console.log(val);
-    })
-    .catch(function() {
-      alert('hmmm something went wrong, please try again');
-    });
+  });
 }
 
 function isLoggedIn() {
