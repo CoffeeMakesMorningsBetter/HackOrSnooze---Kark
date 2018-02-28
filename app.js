@@ -39,9 +39,13 @@ function createStory(title, author, url) {
         url
       }
     }
-  }).then(function(val) {
-    console.log(val);
-  });
+  })
+    .then(function(val) {
+      console.log(val);
+    })
+    .catch(function() {
+      alert('hmmm something went wrong, please try again');
+    });
 }
 
 function createUser(name, username, password) {
@@ -68,9 +72,13 @@ function storeToken(username, password) {
         password
       }
     }
-  }).then(function(val) {
-    localStorage.setItem('token', val.data.token);
-  });
+  })
+    .then(function(val) {
+      localStorage.setItem('token', val.data.token);
+    })
+    .catch(function() {
+      alert('hmmm something went wrong, please try again');
+    });
 }
 
 // function getToken(username, password) {
@@ -95,9 +103,13 @@ function getUser(username) {
     headers: {
       Authorization: 'Bearer ' + token
     }
-  }).then(function(val) {
-    console.log(val);
-  });
+  })
+    .then(function(val) {
+      console.log(val);
+    })
+    .catch(function() {
+      alert('hmmm something went wrong, please try again');
+    });
 }
 
 function isLoggedIn() {
@@ -113,7 +125,29 @@ function addFavorite(storyId) {
     headers: {
       Authorization: 'Bearer ' + localToken
     }
-  }).then(function(val) {
-    console.log(val);
-  });
+  })
+    .then(function(val) {
+      console.log(val);
+    })
+    .catch(function() {
+      alert('hmmm something went wrong, please try again');
+    });
+}
+
+function deleteFavorite(storyId) {
+  var localToken = localStorage.getItem('token');
+  var localUsername = JSON.parse(atob(localToken.split('.')[1])).username;
+  return $.ajax({
+    method: 'DELETE',
+    url: `https://hack-or-snooze.herokuapp.com/users/${localUsername}/favorites/${storyId}`,
+    headers: {
+      Authorization: 'Bearer ' + localToken
+    }
+  })
+    .then(function(val) {
+      console.log(val);
+    })
+    .catch(function() {
+      alert('hmmm something went wrong, please try again');
+    });
 }

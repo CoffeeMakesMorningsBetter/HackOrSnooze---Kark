@@ -44,12 +44,25 @@ $(function() {
   });
 
   $('ol').on('click', 'i', function(event) {
-    $(event.target).toggleClass('far fas');
-    addFavorite(
-      $(event.target)
-        .parent()
-        .attr('id')
-    );
+    if ($(event.target).hasClass('far')) {
+      addFavorite(
+        $(event.target)
+          .parent()
+          .attr('id')
+      ).then(function() {
+        $(event.target).removeClass('far');
+        $(event.target).addClass('fas');
+      });
+    } else {
+      deleteFavorite(
+        $(event.target)
+          .parent()
+          .attr('id')
+      ).then(function() {
+        $(event.target).removeClass('fas');
+        $(event.target).addClass('far');
+      });
+    }
   });
 
   $('#submit-form').on('click', function() {
@@ -125,13 +138,17 @@ $(function() {
       $('#create-name').val(),
       $('#create-user').val(),
       $('#create-pwd').val()
-    ).then(function() {
-      storeToken($('#create-user').val(), $('#create-pwd').val());
-      $('#login-modal').modal('hide');
-      $('#signup-form').trigger('reset');
-      $('#login').addClass('hidden');
-      $('#profile').addClass('hidden');
-      $('#logout').removeClass('hidden');
-    });
+    )
+      .then(function() {
+        storeToken($('#create-user').val(), $('#create-pwd').val());
+        $('#login-modal').modal('hide');
+        $('#signup-form').trigger('reset');
+        $('#login').addClass('hidden');
+        $('#profile').addClass('hidden');
+        $('#logout').removeClass('hidden');
+      })
+      .catch(function() {
+        alert('hmmm something went wrong, please try again');
+      });
   });
 });
