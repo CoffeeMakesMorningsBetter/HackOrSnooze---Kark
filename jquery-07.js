@@ -1,46 +1,23 @@
 $(function() {
   getStories();
   if (isLoggedIn() === true) {
-    $('#login').addClass('hidden');
-    $('#profile').removeClass('hidden');
-    $('#logout').removeClass('hidden');
+    $('#login').hide();
+    $('#profile').show();
+    $('#logout').show();
   }
 
-  // run hasPermission > checks local storage for token
-  // if token > persmision = true, login link > logout link
-  // $('#login').removeClass('hidden');
-  // $('#logout').addClass('hidden');
-  // else > require login on favorites/post
-
-  $('#story-form').on('submit', function(event) {
-    event.preventDefault();
-    createStory($('#title').val(), $('#author').val(), $('#url').val());
-    $('#story-form')
-      .trigger('reset')
-      .slideUp();
-
-    // append to front page
-    // var $i = $("<i>").addClass("far fa-bookmark");
-    // var $title = $("<span>")
-    //   .text($("#title").val())
-    //   .addClass("title-span")
-    //   .css("padding-left", "4px");
-    // var $url = $("#url").val();
-    // $url =
-    //   $url[0] === "h" && ($url[9] === "." || $url[10] === ".")
-    //     ? $url.split("/")[2].slice(4)
-    //     : $url.split("/")[2];
-    // var $urlSpan = $("<span>")
-    //   .append($url)
-    //   .addClass("url-span");
-
-    // $("ol").append($("<li>").append($i, $title, " (", $urlSpan, ")"));
-    // $("#story-form")
-    //   .trigger("reset")
-    //   .slideUp();
-    // $("li").show();
-    // $("#favorites").removeClass("hidden");
-    // $("#show-all").addClass("hidden");
+  $('.front-page').on('click', function() {
+    $('#list ol')
+      .children()
+      .remove();
+    getStories().then(function() {
+      $('#list').show();
+      $('#posts-page').hide();
+      $('#favorites-page').hide();
+      $('#profile-page').hide();
+      $('#favorites').show();
+      $('#show-all').hide();
+    });
   });
 
   $('ol').on('click', 'i', function(event) {
@@ -65,77 +42,99 @@ $(function() {
     }
   });
 
+  $('ol').on('click', '.url-span', function(event) {
+    $('li:not(:contains("' + $(event.target).text() + '"))').hide();
+    $('#favorites').hide();
+    $('#show-all').show();
+  });
+
   $('#submit-form').on('click', function() {
-    // if (permission === true) {
-    $('#story-form').toggle();
-    // } else {
-    // trigger modal
-    // }
+    if (isLoggedIn() === false) {
+      $('#login-modal').modal('show');
+    } else {
+      $('#story-form').toggle();
+    }
+  });
+
+  $('#story-form').on('submit', function(event) {
+    event.preventDefault();
+    createStory($('#title').val(), $('#author').val(), $('#url').val());
+    $('#story-form')
+      .trigger('reset')
+      .slideUp();
   });
 
   $('#posts').on('click', function() {
-    // if (permission === true) {
-    // > display user posts
-    // } else {
-    // trigger modal
-    // }
+    if (isLoggedIn() === false) {
+      $('#login-modal').modal('show');
+    } else {
+      $('#posts-page').toggle();
+    }
   });
 
   $('#favorites').on('click', function() {
-    // if (permission === true) {
-    $('.far')
-      .parent()
-      .hide();
-    $('#favorites').addClass('hidden');
-    $('#show-all').removeClass('hidden');
-    // } else {
-    // trigger modal
-    // }
+    if (isLoggedIn() === false) {
+      $('#login-modal').modal('show');
+    } else {
+      getUser()
+        .then(function(data) {
+          $('#list').hide();
+          $('#posts-page').hide();
+          $('#favorites-page').show();
+          $('#profile-page').hide();
+          $('#favorites').hide();
+          $('#show-all').show();
+
+          data.data.favorites.forEach(function(obj, i) {
+            $('#favorites-page ol').append(
+              $('<li>').text(`name: ${data.data.favorites[i].title}`)
+            );
+            // assign id to delete
+          });
+        })
+        .catch(function() {
+          alert('hmmm something went wrong, please try again');
+        });
+
+      // $('#favorites-page ol').on('click', 'li', function(event) {
+      //   deleteFavorite($(event.target).attr('id')); // will not work until id is assigned
+      // });
+    }
   });
 
-  $('ol').on('click', '.url-span', function(event) {
-    $('li:not(:contains("' + $(event.target).text() + '"))').hide();
-    $('#favorites').addClass('hidden');
-    $('#show-all').removeClass('hidden');
-  });
+  $('#posts').on('click', function() {
+    if (isLoggedIn() === false) {
+      $('#login-modal').modal('show');
+    } else {
+      getUser()
+        .then(function(data) {
+          $('#list').hide();
+          $('#profile-page').hide();
+          $('#favorites-page').hide();
+          $('#favorites').hide();
+          $('#posts-page').show();
+          $('#show-all').show();
 
-  $('.front-page').on('click', function() {
-    $('li').show();
-    $('#favorites').removeClass('hidden');
-    $('#show-all').addClass('hidden');
-  });
+          data.data.favorites.forEach(function(obj, i) {
+            console.log(i);
 
-  $('#login').on('click', function() {
-    $('#login-form').show();
-    $('#signup-form').addClass('hidden');
-  });
-
-  $('#create-acct').on('click', function() {
-    $('#login-form').hide();
-    $('#signup-form').removeClass('hidden');
-  });
-
-  $('#login-form').on('submit', function(event) {
-    event.preventDefault();
-    storeToken($('#login-user').val(), $('#login-pwd').val());
-    $('#login-modal').modal('hide');
-    $('#login-form').trigger('reset');
-    $('#login').addClass('hidden');
-    $('#profile').removeClass('hidden');
-    $('#logout').removeClass('hidden');
-  });
-
-  $('#logout').on('click', function() {
-    localStorage.clear();
-    $('#login').removeClass('hidden');
-    $('#profile').addClass('hidden');
-    $('#logout').addClass('hidden');
+            $('#posts-page ol').append(
+              $('<li>').text(`name: ${data.data.stories[i].title}`)
+            );
+          });
+        })
+        .catch(function() {
+          alert('hmmm something went wrong, please try again');
+        });
+    }
   });
 
   $('#profile').on('click', function() {
     getUser()
       .then(function(data) {
         $('#list').hide();
+        $('#favorites-page').hide();
+        $('#profile-page').show();
         $('#profile-page').append(
           $('<h1>').text(`name: ${data.data.name}`),
           $('<h2>').text(`username: ${data.data.username}`)
@@ -144,6 +143,29 @@ $(function() {
       .catch(function() {
         alert('hmmm something went wrong, please try again');
       });
+  });
+
+  $('#login').on('click', function() {
+    $('#login-form').show();
+    $('#signup-form').hide();
+  });
+
+  $('#login-form').on('submit', function(event) {
+    event.preventDefault();
+    storeToken($('#login-user').val(), $('#login-pwd').val()).then(function() {
+      if (isLoggedIn() === true) {
+        $('#login-modal').modal('hide');
+        $('#login-form').trigger('reset');
+        $('#login').hide();
+        $('#profile').show();
+        $('#logout').show();
+      }
+    });
+  });
+
+  $('#create-acct').on('click', function() {
+    $('#login-form').hide();
+    $('#signup-form').show();
   });
 
   $('#signup-form').on('submit', function(event) {
@@ -157,12 +179,19 @@ $(function() {
         storeToken($('#create-user').val(), $('#create-pwd').val());
         $('#login-modal').modal('hide');
         $('#signup-form').trigger('reset');
-        $('#login').addClass('hidden');
-        $('#profile').removeClass('hidden');
-        $('#logout').removeClass('hidden');
+        $('#login').hide();
+        $('#profile').show();
+        $('#logout').show();
       })
       .catch(function() {
         alert('hmmm something went wrong, please try again');
       });
+  });
+
+  $('#logout').on('click', function() {
+    localStorage.clear();
+    $('#login').show();
+    $('#profile').hide();
+    $('#logout').hide();
   });
 });
