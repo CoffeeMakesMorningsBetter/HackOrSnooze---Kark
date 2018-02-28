@@ -1,30 +1,52 @@
 async function getStories() {
   var stories = await $.getJSON(
-    "https://hack-or-snooze.herokuapp.com/stories?skip=0&limit=10"
+    'https://hack-or-snooze.herokuapp.com/stories?skip=0&limit=10'
   );
   stories.data.forEach(function(obj) {
-    var $i = $("<i>").addClass("far fa-bookmark");
-    var $title = $("<span>")
+    var $i = $('<i>').addClass('far fa-bookmark');
+    var $title = $('<span>')
       .text(obj.title)
-      .addClass("title-span")
-      .css("padding-left", "4px");
+      .addClass('title-span')
+      .css('padding-left', '4px');
     var $url = obj.url;
     $url =
-      $url[0] === "h" && ($url[9] === "." || $url[10] === ".")
-        ? $url.split("/")[2].slice(4)
-        : $url.split("/")[2];
-    var $urlSpan = $("<span>")
+      $url[0] === 'h' && ($url[9] === '.' || $url[10] === '.')
+        ? $url.split('/')[2].slice(4)
+        : $url.split('/')[2];
+    var $urlSpan = $('<span>')
       .append($url)
-      .addClass("url-span");
+      .addClass('url-span');
 
-    $("ol").append($("<li>").append($i, $title, " (", $urlSpan, ")"));
+    $('ol').append($('<li>').append($i, $title, ' (', $urlSpan, ')'));
+  });
+}
+
+function createStory(title, author, url) {
+  var localToken = localStorage.getItem('token');
+  var localUsername = JSON.parse(atob(localToken.split('.')[1])).username;
+  return $.ajax({
+    method: 'POST',
+    url: 'https://hack-or-snooze.herokuapp.com/stories',
+    headers: {
+      Authorization: 'Bearer ' + localToken
+    },
+    data: {
+      data: {
+        username: localUsername,
+        title,
+        author,
+        url
+      }
+    }
+  }).then(function(val) {
+    console.log(val);
   });
 }
 
 function createUser(name, username, password) {
   return $.ajax({
-    method: "POST",
-    url: "https://hack-or-snooze.herokuapp.com/users",
+    method: 'POST',
+    url: 'https://hack-or-snooze.herokuapp.com/users',
     data: {
       data: {
         name,
@@ -37,8 +59,8 @@ function createUser(name, username, password) {
 
 function storeToken(username, password) {
   return $.ajax({
-    method: "POST",
-    url: "https://hack-or-snooze.herokuapp.com/auth",
+    method: 'POST',
+    url: 'https://hack-or-snooze.herokuapp.com/auth',
     data: {
       data: {
         username,
@@ -46,7 +68,7 @@ function storeToken(username, password) {
       }
     }
   }).then(function(val) {
-    localStorage.setItem("token", val.data.token);
+    localStorage.setItem('token', val.data.token);
   });
 }
 
@@ -68,13 +90,15 @@ function storeToken(username, password) {
 function getUser(username) {
   var token = localStorage.getItem(username);
   $.ajax({
-    url: "https://hack-or-snooze.herokuapp.com/users/" + username,
+    url: 'https://hack-or-snooze.herokuapp.com/users/' + username,
     headers: {
-      Authorization: "Bearer " + token
+      Authorization: 'Bearer ' + token
     }
   }).then(function(val) {
     console.log(val);
   });
 }
 
-function hasPermission(username, password) {}
+function isLoggedIn() {
+  return localStorage.getItem('token') !== null;
+}

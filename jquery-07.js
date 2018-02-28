@@ -1,58 +1,65 @@
 $(function() {
   getStories();
+  if (isLoggedIn() === true) {
+    $('#login').addClass('hidden');
+    $('#logout').removeClass('hidden');
+  }
 
-  var permission = false;
   // run hasPermission > checks local storage for token
   // if token > persmision = true, login link > logout link
   // $('#login').removeClass('hidden');
   // $('#logout').addClass('hidden');
   // else > require login on favorites/post
 
-  $("#story-form").on("submit", function(event) {
+  $('#story-form').on('submit', function(event) {
     event.preventDefault();
-    // add story to database to view in posts link
-
-    var $i = $("<i>").addClass("far fa-bookmark");
-    var $title = $("<span>")
-      .text($("#title").val())
-      .addClass("title-span")
-      .css("padding-left", "4px");
-    var $url = $("#url").val();
-    $url =
-      $url[0] === "h" && ($url[9] === "." || $url[10] === ".")
-        ? $url.split("/")[2].slice(4)
-        : $url.split("/")[2];
-    var $urlSpan = $("<span>")
-      .append($url)
-      .addClass("url-span");
-
-    $("ol").append($("<li>").append($i, $title, " (", $urlSpan, ")"));
-    $("#story-form")
-      .trigger("reset")
+    createStory($('#title').val(), $('#author').val(), $('#url').val());
+    $('#story-form')
+      .trigger('reset')
       .slideUp();
-    $("li").show();
-    $("#favorites").removeClass("hidden");
-    $("#show-all").addClass("hidden");
+
+    // append to front page
+    // var $i = $("<i>").addClass("far fa-bookmark");
+    // var $title = $("<span>")
+    //   .text($("#title").val())
+    //   .addClass("title-span")
+    //   .css("padding-left", "4px");
+    // var $url = $("#url").val();
+    // $url =
+    //   $url[0] === "h" && ($url[9] === "." || $url[10] === ".")
+    //     ? $url.split("/")[2].slice(4)
+    //     : $url.split("/")[2];
+    // var $urlSpan = $("<span>")
+    //   .append($url)
+    //   .addClass("url-span");
+
+    // $("ol").append($("<li>").append($i, $title, " (", $urlSpan, ")"));
+    // $("#story-form")
+    //   .trigger("reset")
+    //   .slideUp();
+    // $("li").show();
+    // $("#favorites").removeClass("hidden");
+    // $("#show-all").addClass("hidden");
   });
 
-  $("ol").on("click", "i", function(event) {
+  $('ol').on('click', 'i', function(event) {
     // if (permission === true) {
-    $(event.target).toggleClass("far fas");
+    $(event.target).toggleClass('far fas');
     // store that story in ls
     // } else {
     // trigger modal
     // }
   });
 
-  $("#submit-form").on("click", function() {
+  $('#submit-form').on('click', function() {
     // if (permission === true) {
-    $("#story-form").toggle();
+    $('#story-form').toggle();
     // } else {
     // trigger modal
     // }
   });
 
-  $("#posts").on("click", function() {
+  $('#posts').on('click', function() {
     // if (permission === true) {
     // > display user posts
     // } else {
@@ -60,91 +67,91 @@ $(function() {
     // }
   });
 
-  $("#favorites").on("click", function() {
+  $('#favorites').on('click', function() {
     // if (permission === true) {
-    $(".far")
+    $('.far')
       .parent()
       .hide();
-    $("#favorites").addClass("hidden");
-    $("#show-all").removeClass("hidden");
+    $('#favorites').addClass('hidden');
+    $('#show-all').removeClass('hidden');
     // } else {
     // trigger modal
     // }
   });
 
-  $("ol").on("click", ".url-span", function(event) {
+  $('ol').on('click', '.url-span', function(event) {
     $('li:not(:contains("' + $(event.target).text() + '"))').hide();
-    $("#favorites").addClass("hidden");
-    $("#show-all").removeClass("hidden");
+    $('#favorites').addClass('hidden');
+    $('#show-all').removeClass('hidden');
   });
 
-  $(".front-page").on("click", function() {
-    $("li").show();
-    $("#favorites").removeClass("hidden");
-    $("#show-all").addClass("hidden");
+  $('.front-page').on('click', function() {
+    $('li').show();
+    $('#favorites').removeClass('hidden');
+    $('#show-all').addClass('hidden');
   });
 
-  $("#login").on("click", function() {
-    $("#login-form").show();
-    $("#signup-form").addClass("hidden");
+  $('#login').on('click', function() {
+    $('#login-form').show();
+    $('#signup-form').addClass('hidden');
   });
 
-  $("#create-acct").on("click", function() {
-    $("#login-form").hide();
-    $("#signup-form").removeClass("hidden");
+  $('#create-acct').on('click', function() {
+    $('#login-form').hide();
+    $('#signup-form').removeClass('hidden');
   });
 
-  $("#login-form").on("submit", function(event) {
+  $('#login-form').on('submit', function(event) {
     event.preventDefault();
-    storeToken($("#login-user").val(), $("#login-pwd").val());
-    $("#login-modal").modal("hide");
-    $("#login-form").trigger("reset");
-    $("#login").addClass("hidden");
-    $("#logout").removeClass("hidden");
+    storeToken($('#login-user').val(), $('#login-pwd').val());
+    $('#login-modal').modal('hide');
+    $('#login-form').trigger('reset');
+    $('#login').addClass('hidden');
+    $('#logout').removeClass('hidden');
   });
 
-  $("#logout").on("click", function() {
+  $('#logout').on('click', function() {
     localStorage.clear();
-    $("#login").removeClass("hidden");
-    $("#logout").addClass("hidden");
+    $('#login').removeClass('hidden');
+    $('#logout').addClass('hidden');
   });
 
-  $("#signup-form").on("submit", function(event) {
+  $('#signup-form').on('submit', function(event) {
     event.preventDefault();
     createUser(
-      $("#create-name").val(),
-      $("#create-user").val(),
-      $("#create-pwd").val()
+      $('#create-name').val(),
+      $('#create-user').val(),
+      $('#create-pwd').val()
     ).then(function() {
-      storeToken($("#create-user").val(), $("#create-pwd").val());
-      $("#login-modal").modal("hide");
-      $("#signup-form").trigger("reset");
-      $("#login").addClass("hidden");
-      $("#logout").removeClass("hidden");
+      storeToken($('#create-user').val(), $('#create-pwd').val());
+      $('#login-modal').modal('hide');
+      $('#signup-form').trigger('reset');
+      $('#login').addClass('hidden');
+      $('#logout').removeClass('hidden');
     });
   });
 });
 
 async function getStories() {
   var stories = await $.getJSON(
-    "https://hack-or-snooze.herokuapp.com/stories?skip=0&limit=10"
+    'https://hack-or-snooze.herokuapp.com/stories?skip=0&limit=10'
   );
   stories.data.forEach(function(obj) {
-    var $i = $("<i>").addClass("far fa-bookmark");
-    var $title = $("<span>")
+    var $i = $('<i>').addClass('far fa-bookmark');
+    var $title = $('<span>')
       .text(obj.title)
-      .addClass("title-span")
-      .css("padding-left", "4px");
+      .addClass('title-span')
+      .css('padding-left', '4px');
     var $url = obj.url;
     $url =
-      $url[0] === "h" && ($url[9] === "." || $url[10] === ".")
-        ? $url.split("/")[2].slice(4)
-        : $url.split("/")[2];
-    var $urlSpan = $("<span>")
+      $url[0] === 'h' && ($url[9] === '.' || $url[10] === '.')
+        ? $url.split('/')[2].slice(4)
+        : $url.split('/')[2];
+    var $urlSpan = $('<span>')
       .append($url)
-      .addClass("url-span");
+      .addClass('url-span');
 
-    $("ol").append($("<li>").append($i, $title, " (", $urlSpan, ")"));
+    $('ol').append($('<li>').append($i, $title, ' (', $urlSpan, ')'));
   });
 }
 
