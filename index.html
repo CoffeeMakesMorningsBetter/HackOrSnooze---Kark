@@ -14,6 +14,7 @@
 </head>
 
 <body id="body">
+
   <header id="header" class="container">
     <nav class="row">
       <div class="col">
@@ -21,17 +22,18 @@
         <a class="front-page" href="#">
           <strong>Hack Or Snooze</strong>
         </a>
-        <a class="front-page" href="#">new</a>
+        <a id="new" class="front-page" href="#">new</a>
         <span>|</span>
         <a id="submit-form" href="#">submit</a>
         <span>|</span>
         <a id="posts" href="#">posts</a>
-        <span>|</span>
-        <a id="favorites" href="#">favorites</a>
-        <a id="show-all" class="hidden front-page" href="#">all</a>
+        <a id="favorites" href="#">
+          <span>|</span>favorites</a>
         <span class="ml-auto">
+          <a id="profile" class="hidden" href="#">profile</a>
           <a id="login" data-toggle="modal" data-target="#login-modal" href="#">login</a>
-          <a id="logout" class="hidden" data-toggle="modal" data-target="#login-modal" href="#">logout</a>
+          <a id="logout" class="hidden" data-toggle="modal" data-target="#login-modal" href="#">
+            <span>|</span>logout</a>
         </span>
       </div>
     </nav>
@@ -98,21 +100,29 @@
               </div>
             </div>
           </form>
+
         </div>
       </div>
     </div>
   </div>
 
   <main id="main" class="container">
+
     <form id="story-form" class="hidden">
       <div class="form-group row">
         <div class="col-md-3"></div>
-        <div class="col-md-5  text-left form-heading">submit link</div>
+        <div class="col-md-5 text-left form-heading">submit link</div>
       </div>
       <div class="form-group row">
         <label class="col-md-3 form-label text-md-right" for="title">title</label>
         <div class="col-md-5 ">
           <input type="text" class="form-control" id="title" placeholder="enter title" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 form-label text-md-right" for="title">author</label>
+        <div class="col-md-5 ">
+          <input type="text" class="form-control" id="author" placeholder="enter author of article" required>
         </div>
       </div>
       <div class="form-group row">
@@ -138,8 +148,41 @@
         </div>
       </div>
     </section>
+
+    <section id="favorites-page" class="hidden">
+      <div class "row">
+        <div class="col">
+          <ol>
+            <!-- populate favorites here -->
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="posts-page" class="hidden">
+      <div class "row">
+        <div class="col">
+          <ol>
+            <!-- populate posts here -->
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="profile-page" class="hidden">
+      <div class "row">
+        <div class="col">
+          <ul>
+            <!-- populate login info here -->
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <hr>
   </main>
+
+
   <div id="scripts">
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
