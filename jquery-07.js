@@ -1,26 +1,46 @@
 $(function() {
   getStories();
+
   if (isLoggedIn() === true) {
+    var $localToken = localStorage.getItem('token');
+    var $localUsername = JSON.parse(atob($localToken.split('.')[1])).username;
     $('#login').hide();
-    $('#profile').show();
+    $('#profile')
+      .css({ 'font-weight': 800, 'padding-right': '2px' })
+      .text($localUsername)
+      .show();
     $('#logout').show();
   }
 
-  $('.front-page').on('click', function() {
-    $('#list ol')
-      .children()
-      .remove();
-    getStories().then(function() {
-      $('#list').show();
-      $('#posts-page').hide();
-      $('#favorites-page').hide();
-      $('#profile-page').hide();
-      $('#favorites').show();
-      $('#show-all').hide();
+  $('#posts-page ol').on('click', 'i:last-of-type', function(event) {
+    deletePost(
+      $(event.target)
+        .closest('li')
+        .attr('id')
+    ).then(function() {
+      $(event.target)
+        .closest('li')
+        .fadeOut();
     });
   });
 
-  $('ol').on('click', 'i', function(event) {
+  $('.front-page').on('click', function() {
+    $('#posts').removeClass('active');
+    $('#profile').removeClass('active');
+    $('#favorites').removeClass('active');
+    $('#new').addClass('active');
+    $('#list').show();
+    $('#posts-page').hide();
+    $('#favorites-page').hide();
+    $('#profile-page').hide();
+    $('#favorites').show();
+    $('#list ol')
+      .children()
+      .remove();
+    getStories();
+  });
+
+  $('ol').on('click', '.fa-bookmark', function(event) {
     if ($(event.target).hasClass('far')) {
       addFavorite(
         $(event.target)
@@ -28,7 +48,10 @@ $(function() {
           .attr('id')
       ).then(function() {
         $(event.target).removeClass('far');
-        $(event.target).addClass('fas');
+        $(event.target).addClass('fas fa-pulse');
+        setTimeout(() => {
+          $(event.target).removeClass('fa-pulse');
+        }, 1000);
       });
     } else {
       deleteFavorite(
@@ -44,61 +67,28 @@ $(function() {
 
   $('ol').on('click', '.url-span', function(event) {
     $('li:not(:contains("' + $(event.target).text() + '"))').hide();
-    $('#favorites').hide();
-    $('#show-all').show();
+    $('#favorites').show();
   });
 
   $('#submit-form').on('click', function() {
     if (isLoggedIn() === false) {
       $('#login-modal').modal('show');
     } else {
-      $('#story-form').toggle();
+      $('#story-form').slideToggle();
     }
   });
 
   $('#story-form').on('submit', function(event) {
     event.preventDefault();
     createStory($('#title').val(), $('#author').val(), $('#url').val());
-    $('#story-form')
-      .trigger('reset')
-      .slideUp();
-  });
-
-  $('#posts').on('click', function() {
-    if (isLoggedIn() === false) {
-      $('#login-modal').modal('show');
-    } else {
-      $('#posts-page').toggle();
-    }
   });
 
   $('#favorites').on('click', function() {
     if (isLoggedIn() === false) {
       $('#login-modal').modal('show');
     } else {
-      getUser()
-        .then(function(data) {
-          $('#list').hide();
-          $('#posts-page').hide();
-          $('#favorites-page').show();
-          $('#profile-page').hide();
-          $('#favorites').hide();
-          $('#show-all').show();
-
-          data.data.favorites.forEach(function(obj, i) {
-            $('#favorites-page ol').append(
-              $('<li>').text(`name: ${data.data.favorites[i].title}`)
-            );
-            // assign id to delete
-          });
-        })
-        .catch(function() {
-          alert('hmmm something went wrong, please try again');
-        });
-
-      // $('#favorites-page ol').on('click', 'li', function(event) {
-      //   deleteFavorite($(event.target).attr('id')); // will not work until id is assigned
-      // });
+      $('#story-form').slideUp();
+      renderFavorites();
     }
   });
 
@@ -106,38 +96,33 @@ $(function() {
     if (isLoggedIn() === false) {
       $('#login-modal').modal('show');
     } else {
-      getUser()
-        .then(function(data) {
-          $('#list').hide();
-          $('#profile-page').hide();
-          $('#favorites-page').hide();
-          $('#favorites').hide();
-          $('#posts-page').show();
-          $('#show-all').show();
-
-          data.data.favorites.forEach(function(obj, i) {
-            console.log(i);
-
-            $('#posts-page ol').append(
-              $('<li>').text(`name: ${data.data.stories[i].title}`)
-            );
-          });
-        })
-        .catch(function() {
-          alert('hmmm something went wrong, please try again');
-        });
+      $('#story-form').slideUp();
+      renderPosts();
     }
   });
 
   $('#profile').on('click', function() {
+    $('#list').hide();
+    $('#posts-page').hide();
+    $('#favorites-page').hide();
+    $('#profile-page').show();
+    $('#new').removeClass('active');
+    $('#posts').removeClass('active');
+    $('#favorites').removeClass('active');
+    $('#profile').addClass('active');
+    $('#story-form').slideUp();
+    $('#profile-page ul')
+      .children()
+      .remove();
     getUser()
       .then(function(data) {
-        $('#list').hide();
-        $('#favorites-page').hide();
-        $('#profile-page').show();
-        $('#profile-page').append(
-          $('<h1>').text(`name: ${data.data.name}`),
-          $('<h2>').text(`username: ${data.data.username}`)
+        $('#profile-page ul').append(
+          $('<li>')
+            .text(`name: ${data.data.name}`)
+            .addClass('title-span'),
+          $('<li>')
+            .text(`username: ${data.data.username}`)
+            .addClass('title-span')
         );
       })
       .catch(function() {
@@ -146,18 +131,27 @@ $(function() {
   });
 
   $('#login').on('click', function() {
-    $('#login-form').show();
-    $('#signup-form').hide();
+    $('#login-form')
+      .trigger('reset')
+      .show();
+    $('#signup-form')
+      .trigger('reset')
+      .hide();
   });
 
   $('#login-form').on('submit', function(event) {
     event.preventDefault();
     storeToken($('#login-user').val(), $('#login-pwd').val()).then(function() {
+      var $localToken = localStorage.getItem('token');
+      var $localUsername = JSON.parse(atob($localToken.split('.')[1])).username;
       if (isLoggedIn() === true) {
         $('#login-modal').modal('hide');
         $('#login-form').trigger('reset');
         $('#login').hide();
-        $('#profile').show();
+        $('#profile')
+          .css({ 'font-weight': 800, 'padding-right': '2px' })
+          .text($localUsername)
+          .show();
         $('#logout').show();
       }
     });
@@ -177,10 +171,16 @@ $(function() {
     )
       .then(function() {
         storeToken($('#create-user').val(), $('#create-pwd').val());
+        var $localToken = localStorage.getItem('token');
+        var $localUsername = JSON.parse(atob($localToken.split('.')[1]))
+          .username;
         $('#login-modal').modal('hide');
         $('#signup-form').trigger('reset');
         $('#login').hide();
-        $('#profile').show();
+        $('#profile')
+          .css({ 'font-weight': 800, 'padding-right': '2px' })
+          .text($localUsername)
+          .show();
         $('#logout').show();
       })
       .catch(function() {
@@ -191,7 +191,25 @@ $(function() {
   $('#logout').on('click', function() {
     localStorage.clear();
     $('#login').show();
-    $('#profile').hide();
+    $('#profile')
+      .hide()
+      .removeClass('active');
     $('#logout').hide();
+    $('#posts-page').hide();
+    $('#favorites-page').hide();
+    $('#profile-page').hide();
+    $('#story-form').slideUp();
+    $('#profile')
+      .hide()
+      .removeClass('active');
+    $('#favorites').removeClass('active');
+    $('#profile').removeClass('active');
+    $('#posts').removeClass('active');
+    $('#new').removeClass('active');
+    $('#list').show();
+    $('#list ol')
+      .children()
+      .remove();
+    getStories();
   });
 });

@@ -22,20 +22,18 @@
         <a class="front-page" href="#">
           <strong>Hack Or Snooze</strong>
         </a>
-        <a class="front-page" href="#">new</a>
+        <a id="new" class="front-page" href="#">new</a>
         <span>|</span>
         <a id="submit-form" href="#">submit</a>
         <span>|</span>
         <a id="posts" href="#">posts</a>
-        <span>|</span>
-        <a id="favorites" href="#">favorites</a>
-        <a id="show-all" class="hidden front-page" href="#">all</a>
+        <a id="favorites" href="#">
+          <span>|</span>favorites</a>
         <span class="ml-auto">
-          <a id="profile" class="hidden" href="#">profile
-            <span>|</span>
-          </a>
+          <a id="profile" class="hidden" href="#">profile</a>
           <a id="login" data-toggle="modal" data-target="#login-modal" href="#">login</a>
-          <a id="logout" class="hidden" data-toggle="modal" data-target="#login-modal" href="#">logout</a>
+          <a id="logout" class="hidden" data-toggle="modal" data-target="#login-modal" href="#">
+            <span>|</span>logout</a>
         </span>
       </div>
     </nav>
@@ -71,6 +69,7 @@
               </div>
             </div>
           </form>
+
           <form id="signup-form" class="hidden" method="POST">
             <div class="form-group row">
               <div class="col-md-3"></div>
@@ -112,7 +111,7 @@
     <form id="story-form" class="hidden">
       <div class="form-group row">
         <div class="col-md-3"></div>
-        <div class="col-md-5  text-left form-heading">submit link</div>
+        <div class="col-md-5 text-left form-heading">submit link</div>
       </div>
       <div class="form-group row">
         <label class="col-md-3 form-label text-md-right" for="title">title</label>
@@ -143,7 +142,7 @@
     <section id="list">
       <div class "row">
         <div class="col">
-          <ol id="ol">
+          <ol>
             <!-- populate 10 stories here -->
           </ol>
         </div>
@@ -153,7 +152,7 @@
     <section id="favorites-page" class="hidden">
       <div class "row">
         <div class="col">
-          <ol id="ol">
+          <ol>
             <!-- populate favorites here -->
           </ol>
         </div>
@@ -163,7 +162,7 @@
     <section id="posts-page" class="hidden">
       <div class "row">
         <div class="col">
-          <ol id="ol">
+          <ol>
             <!-- populate posts here -->
           </ol>
         </div>
@@ -173,9 +172,9 @@
     <section id="profile-page" class="hidden">
       <div class "row">
         <div class="col">
-          <ol id="ol">
+          <ul>
             <!-- populate login info here -->
-          </ol>
+          </ul>
         </div>
       </div>
     </section>
